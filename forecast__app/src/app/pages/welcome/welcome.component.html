@@ -1,0 +1,14 @@
+<div class="app-page__wrap">
+  <fieldset class="app-page__block">
+    <legend class="app-page__title">Add a location</legend>
+    <form class="app-page__form" (ngSubmit)="addZipCode(); displayCurrent()" zipForm="ngForm">
+      <label class="app-page__label" for="zipCode">Enter a zipcode:</label>
+      <input class="app-page__input" id="zipCode" placeholder="Your zipcode" name="zipCode" [(ngModel)]="zipCode"
+        required>
+      <button type="submit" class="app-page__btn">Add location</button>
+    </form>
+  </fieldset>
+</div>
+<div *ngFor="let log of logArr">
+  <app-current-weather *ngIf="showCurrent" [zipCode]="zipCode"></app-current-weather>
+</div>
