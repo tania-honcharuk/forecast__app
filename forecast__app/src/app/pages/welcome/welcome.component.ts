@@ -10,6 +10,8 @@ import { StorageService } from './../../services/storage.service';
 export class WelcomeComponent implements OnInit {
   todos!: Array<number>;
   showValidationErrors!: boolean;
+  btnState:boolean=false;
+  textField!: any;
 
   constructor(
     private storageService: StorageService,

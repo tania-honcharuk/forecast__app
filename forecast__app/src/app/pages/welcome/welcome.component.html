@@ -3,9 +3,18 @@
     <legend class="app-page__title">Add a location</legend>
     <form #form="ngForm" class="app-page__form" (ngSubmit)="onFormSubmit(form)">
       <label class="app-page__label" for="zipCode">Enter a zipcode:</label>
-      <input class="app-page__input" ngModel #textField="ngModel" id="zipCode" placeholder="Your zipcode" name="zipCode"
-        required minlength="5" (keypress)="keyPressNumbers($event)">
-      <button type="submit" class="app-page__btn">Add location</button>
+      <input 
+      class="app-page__input" 
+      ngModel #textField="ngModel" 
+      id="zipCode" 
+      placeholder="Your zipcode" 
+      name="zipCode" 
+      required
+      minlength="5"
+      maxlength="5"
+      (keypress)="keyPressNumbers($event)">
+      <p *ngIf="btnState">Input</p>
+      <button type="submit" [disabled]="!form.valid" class="app-page__btn">Add location</button>
     </form>
   </fieldset>
 </div>

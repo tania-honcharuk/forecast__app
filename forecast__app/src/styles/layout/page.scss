@@ -74,6 +74,12 @@
     &:hover {
       color: darken($primary, 10%);
     }
+
+    &:disabled,
+    &[disabled] {
+      color: darken($primary, 40%);
+      cursor: not-allowed;
+    }
   }
 
   &__link {
