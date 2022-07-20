@@ -1,6 +1,6 @@
 <div class="app-page__wrap">
   <fieldset class="app-page__block">
-    <legend class="app-page__title">{{weatherDetails.cityName}}</legend>
+    <legend class="app-page__title">{{weatherDetails.cityName}} {{todo}}</legend>
     <div class="app-page__column first-column">
       <span class="app-page__text"><strong>Current conditions</strong>: {{weatherDetails.description}}</span>
       <span class="app-page__text"><strong>Temparature</strong>: {{weatherDetails.currentTemperature}}F</span>
@@ -8,6 +8,7 @@
       <span class="app-page__text"><strong>Max</strong>: {{weatherDetails.maxTemperature}}F</span>
     </div>
     <div class="app-page__column second-column">
+      <button class="app-page__delete" (click)="onDeleteClick()">X</button>
       <img class="app-page__icon" src="{{weatherDetails.icon}}" alt="{{weatherDetails.description}}">
       <button (click)="displayWeatherForecast()">Forecast for 5 days</button>
     </div>

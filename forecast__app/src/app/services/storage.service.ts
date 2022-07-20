@@ -1,23 +1,64 @@
 import { Injectable } from '@angular/core';
+import { fromEvent, Subject, Subscription, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
+  todos: Array<number> = [];
+  storageListenSub!: Subscription;
+  private subject = new BehaviorSubject<string>('');
 
-  set(key: string, data: Array<number>): void {
-    return localStorage.setItem(key, JSON.stringify(data));
+  name = this.subject.asObservable()
+
+  constructor() {
+    this.loadState()
+  }
+  ngOnDestroy() {
+    if (this.storageListenSub) this.storageListenSub.unsubscribe();
   }
 
-  get(key: string) {
-    return JSON.parse(localStorage.getItem(key) || '');
+  changeName(name: string) {
+    this.subject.next(name);
   }
 
-  remove (key: string, data: Array<number>, item: number ) {
-    let arr: Array<number> = JSON.parse(localStorage.getItem(key) || '');
-    arr = data.splice(data.indexOf(item), 1, ...arr)
-    console.log(arr, data, key, item, 9876)
-    return localStorage.setItem(key, JSON.stringify(data));
+  getTodos() {
+    return this.todos
+  }
+  saveState() {
+    localStorage.setItem('zipCode', JSON.stringify(this.todos))
   }
 
+  getTodo() {
+    return this.subject.asObservable();
+  }
+
+  addTodo(todo: number) {
+    this.todos.push(todo);
+    return this.saveState()
+  }
+
+  deleteTodo(text: number) {
+    const index = this.todos.findIndex(t => t === text)
+    if (index == -1) return
+
+    this.todos.splice(index, 1)
+
+    this.saveState()
+  }
+
+  loadState() {
+    try {
+      const zipInStorage = JSON.parse(localStorage.getItem('zipCode') || '');
+
+      if (!zipInStorage) return
+
+      this.todos.length = 0;
+      this.todos.push(...zipInStorage);
+    } catch (e) {
+      console.log('There was an error retrieving the todos from localStorage');
+      console.log(e);
+    }
+
+  }
 }

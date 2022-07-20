@@ -1,6 +1,6 @@
-<div class="app-page__wrap" *ngIf="forecastData">
+<div class="app-page__wrap" *ngIf="displayForecastData">
   <fieldset class="app-page__block">
-    <legend class="app-page__title">{{forecastData.name}} five day forecast: {{logZip}} </legend>
+    <legend class="app-page__title">{{forecastData.name}} five day forecast: {{todo}} </legend>
     <div class="app-page__line" *ngFor="let n of numbers">
       <span class="app-page__text"><strong>{{forecastData.details[n].date | date : 'EEEE'}}:&nbsp;</strong></span>
       <span class="app-page__text">{{forecastData.details[n].description}}&nbsp;-&nbsp;</span>
@@ -8,6 +8,6 @@
       <span class="app-page__text">Max:&nbsp;{{forecastData.details[n].maxTemperature}}F -&nbsp;</span>
       <img class="app-page__icon" src="{{forecastData.details[n].icon}}" alt="{{forecastData.details[n].description}}">
     </div>
-    <a class="app-page__link" [routerLink]="['/welcome']" routerLinkActive="router-link-active">Back</a>
   </fieldset>
 </div>
+<a class="app-page__link" [routerLink]="['/welcome']" routerLinkActive="router-link-active">Back</a>

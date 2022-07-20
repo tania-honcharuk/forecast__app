@@ -1,7 +1,7 @@
 import { StorageService } from './../../../services/storage.service';
 import { WeatherData } from './../../../models/weatherData.model';
 import { ForecastService } from './../../../services/forecast.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,9 +10,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./current-weather.component.scss']
 })
 export class CurrentWeatherComponent implements OnInit {
-  @Input() zipCode!: number;
-  logZip!: string;
-  logArr: Array<number> = [];
+  @Input() todo!: number;
+
+  @Output() deleteClick: EventEmitter<void> = new EventEmitter()
+  // @Input() zipCode!: number;
+  logZip!: number;
+  // logArr: Array<number> = [];
   weatherDetails: WeatherData = new WeatherData();
   displayForecast: boolean = false;
 
@@ -20,12 +23,12 @@ export class CurrentWeatherComponent implements OnInit {
     private forecastService: ForecastService,
     private storageService: StorageService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    this.logArr = this.storageService.get('zipCode');
-    this.logZip = this.zipCode.toString();
-    this.forecastService.LoadCurrentWeather(this.logZip).subscribe(
+    this.logZip = this.todo;
+    this.forecastService.LoadCurrentWeather(this.todo).subscribe(
       res => {
         this.weatherDetails.cityName = res.name;
         this.weatherDetails.description = res.weather[0].description;
@@ -37,9 +40,13 @@ export class CurrentWeatherComponent implements OnInit {
     )
   }
 
-  displayWeatherForecast() {
-    this.displayForecast = true;
-    this.router.navigateByUrl(`/forecast/${this.zipCode}`);
+  onDeleteClick() {
+    this.deleteClick.emit()
   }
 
+  displayWeatherForecast() {
+    this.displayForecast = true;
+    this.router.navigateByUrl(`/forecast/${this.todo}`);
+    this.storageService.changeName(this.todo.toString())
+  }
 }

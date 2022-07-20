@@ -7,15 +7,28 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ForecastService {
+  host = "https://api.openweathermap.org/data/2.5/";
 
   constructor(private http: HttpClient) { }
 
-  LoadForecastWeather(zip: string): Observable<any> {
-    return this.http.get("https://api.openweathermap.org/data/2.5/forecast?zip="+zip+",us&APPID=dabc2b57d81c4493c08ab63bb4d9e326&units=imperial" );
+  LoadForecastWeather(zip: number): Observable<any> {
+    return this.http.get(`${this.host}/forecast`, {
+      params: {
+        zip: zip + ',us',
+        appid: 'dabc2b57d81c4493c08ab63bb4d9e326',
+        units: 'imperial'
+      }
+    })
   }
 
-  LoadCurrentWeather(zip: string): Observable<any> {
-    return this.http.get("https://api.openweathermap.org/data/2.5/weather?zip="+zip+",us&APPID=dabc2b57d81c4493c08ab63bb4d9e326&units=imperial" );
+  LoadCurrentWeather(zip: number): Observable<any> {
+    return this.http.get(`${this.host}/weather`, {
+      params: {
+        zip: zip + ',us',
+        appid: 'dabc2b57d81c4493c08ab63bb4d9e326',
+        units: 'imperial'
+      }
+    })
   }
 
 }

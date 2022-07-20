@@ -1,7 +1,7 @@
 import { ForecastData } from './../../models/ForecastData.model';
 import { StorageService } from './../../services/storage.service';
 import { ForecastService } from './../../services/forecast.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ForecastDetails } from '../../models/ForecastDetails.model';
 
 @Component({
@@ -11,19 +11,27 @@ import { ForecastDetails } from '../../models/ForecastDetails.model';
 })
 export class ForecastComponent implements OnInit {
   forecastData!: ForecastData;
-  logZip!: number;
+  displayForecastData = true;
+  //logZip!: number;
   logArr: Array<number> = [];
   numbers: Array<number> = [];
 
+  @Input() todo!: number;
+  test!: number;
+
   constructor(
     private forecastService: ForecastService,
-    private storageService: StorageService
+    private storageService: StorageService,
   ) { }
 
   ngOnInit(): void {
-    this.logArr = this.storageService.get('zipCode');
-    this.logArr.forEach((zip: number) => this.logZip = zip)
-    this.forecastService.LoadForecastWeather(this.logZip.toString()).subscribe(
+    this.storageService.name.subscribe(data =>{
+      this.test = Number(data)
+    })
+
+    console.log(this.test)
+
+    this.forecastService.LoadForecastWeather(this.test).subscribe(
       res => {
         this.forecastData = new ForecastData();
         this.forecastData.name = res.city.name;
@@ -43,5 +51,6 @@ export class ForecastComponent implements OnInit {
 
     this.numbers = Array(5).fill(0).map((x, i) => i);
   }
+
 
 }
